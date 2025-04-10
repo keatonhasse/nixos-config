@@ -6,6 +6,7 @@
     ./tsnsrv.nix
     ./nixarr.nix
     ./minecraft.nix
+    ./miniflux.nix
     ./paperless.nix
   ];
 
