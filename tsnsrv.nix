@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, self, ... }:
+{ config, inputs, ... }:
 
 {
   imports = [ inputs.tsnsrv.nixosModules.default ];
