@@ -77,7 +77,7 @@
     openssh.enable = true;
     tailscale.enable = true;
     audiobookshelf.enable = false;
-    invidious.enabled = false;
+    invidious.enable = false;
   };
 
   system.stateVersion = "24.05";
