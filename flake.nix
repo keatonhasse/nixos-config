@@ -17,7 +17,6 @@
       url = "github:rasmus-kirk/nixarr/dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # archiverr.url = "github:keatonhasse/archiverr";
   };
 
   outputs = { self, nixpkgs, agenix, ... }@inputs: {
