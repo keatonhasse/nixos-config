@@ -8,6 +8,7 @@
     ./minecraft.nix
     ./miniflux.nix
     ./paperless.nix
+    ./mailserver.nix
   ];
 
   boot = {

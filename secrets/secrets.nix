@@ -7,6 +7,9 @@ in
   "airvpn.age".publicKeys = [ keaton anton ];
   "admin.age".publicKeys = [ keaton anton ];
   "tsnsrv.age".publicKeys = [ keaton anton ];
+  "radarr-api-key.age".publicKeys = [ keaton anton ];
+  "sonarr-api-key.age".publicKeys = [ keaton anton ];
   "miniflux.age".publicKeys = [ keaton anton ];
   "paperless.age".publicKeys = [ keaton anton ];
+  "mailserver.age".publicKeys = [ keaton anton ];
 }

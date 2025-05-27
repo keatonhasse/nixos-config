@@ -25,20 +25,15 @@
     };
 
   fileSystems."/data/media" =
-    { device = "/dev/disk/by-uuid/930fd766-4b07-4122-bfbc-1ff85fc2f35b";
-      fsType = "ext4";
-    };
-
-  fileSystems."/data/media/library/music" =
-    { device = "//192.168.8.1/music";
-      fsType = "cifs";
-      options = [ "nofail" "uid=988" "gid=988" "dir_mode=0775" "file_mode=0775" ];
-    };
-
-  fileSystems."/data/media/archive" =
-    { device = "/dev/disk/by-uuid/e23862bd-80b6-40f7-a8e0-8cdac38f234b";
+    { device = "/dev/disk/by-uuid/911845c3-f772-412a-9344-1713d9200aaf";
       fsType = "ext4";
       options = [ "nofail" ];
+    };
+
+  fileSystems."/data/redtopia" =
+    { device = "//192.168.8.1/music/redtopia";
+      fsType = "cifs";
+      options = [ "nofail" "uid=988" "gid=988" "dir_mode=0775" "file_mode=0775" ];
     };
 
   swapDevices =

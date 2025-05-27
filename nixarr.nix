@@ -16,27 +16,6 @@ in
     ];
   };
 
-  #systemd = {
-  #  timers."restart-torrenter" = {
-  #    wantedBy = [ "timers.target" ];
-  #    timerConfig = {
-  #      OnCalendar = "daily";
-  #      Unit = "restart-torrenter.service";
-  #    };
-  #  };
-
-  #  services."restart-torrenter" = {
-  #    script = ''
-  #      systemctl restart wg.service
-  #      systemctl restart transmission.service
-  #    '';
-  #    serviceConfig = {
-  #      Type = "oneshot";
-  #      User = "root";
-  #    };
-  #  };
-  #};
-
   nixarr = {
     enable = true;
 
@@ -47,27 +26,25 @@ in
       wgConf = config.age.secrets.airvpn.path;
     };
 
-    plex.enable = false;
+    plex.enable = true;
+    tautulli.enable = true;
     jellyfin.enable = true;
     jellyseerr.enable = true;
 
+    autobrr.enable = false;
     transmission = {
       enable = true;
       vpn.enable = true;
       peerPort = 26789;
       extraSettings = {
         rpc-host-whitelist = "transmission.${domain}";
-        #alt-speed-time-enabled = true;
-        #alt-speed-time-begin = 0;
-        #alt-speed-time-end = 420;
         idle-seeding-limit-enabled = true;
         ratio-limit-enabled = true;
       };
-      #privateTrackers.cross-seed.enable = true;
     };
 
     sabnzbd = {
-      enable = false;
+      enable = true;
       whitelistHostnames = [ "sabnzbd.${domain}" ];
     };
 
@@ -79,28 +56,97 @@ in
     sonarr.enable = true;
 
     recyclarr = {
-      enable = false;
+      enable = true;
+      configuration = {
+        radarr = {
+          sqp-1-web-1080p = {
+            base_url = "http://localhost:7878";
+            api_key = "!env_var RADARR_API_KEY";
+            delete_old_custom_formats = true;
+            replace_existing_custom_formats = true;
+            include = [
+              {
+                template = "radarr-quality-definition-sqp-streaming";
+              }
+              {
+                template = "radarr-quality-profile-sqp-1-web-1080p";
+              }
+              {
+                template = "radarr-custom-formats-sqp-1-web-1080p";
+              }
+            ];
+            quality_profiles = [
+              {
+                name = "SQP-1 WEB (1080p)";
+                min_format_score = 10;
+              }
+            ];
+          };
+        };
+        sonarr = {
+          sonarr_merged = {
+            base_url = "http://localhost:8989";
+            api_key = "!env_var SONARR_API_KEY";
+            delete_old_custom_formats = true;
+            replace_existing_custom_formats = true;
+            include = [
+              {
+                template = "sonarr-quality-definition-series";
+              }
+              {
+                template = "sonarr-v4-quality-profile-web-1080p-alternative";
+              }
+              {
+                template = "sonarr-v4-custom-formats-web-1080p";
+              }
+              {
+                template = "sonarr-quality-definition-anime";
+              }
+              {
+                template = "sonarr-v4-quality-profile-anime";
+              }
+              {
+                template = "sonarr-v4-custom-formats-anime";
+              }
+            ];
+            quality_profiles = [
+              {
+                name = "WEB-1080p";
+              }
+              {
+                name = "Remux-1080p - Anime";
+              }
+            ];
+            custom_formats = [
+              {
+                trash_ids = [
+                  "026d5aadd1a6b4e550b134cb6c72b3ca"
+                  "b2550eb333d27b75833e25b8c2557b38"
+                  "418f50b10f1907201b6cfdf881f467b7"
+                ];
+                assign_scores_to = [
+                  {
+                    name = "Remux-1080p - Anime";
+                    score = 0;
+                  }
+                ];
+              }
+            ];
+          };
+        };
+      };
     };
   };
 
   virtualisation.oci-containers.containers = {
     watchstate = {
-      autoStart = true;
+      autoStart = false;
       image = "ghcr.io/arabcoders/watchstate:latest";
-      ports = [ "8080:8080" ];
+      ports = [ "8081:8080" ];
       user = "1000:1000";
       volumes = [ "/data/.state/watchstate:/config:rw" ];
-      extraOptions = [ "--network=host" ];
+      # extraOptions = [ "--network=host" ];
     };
-    #recyclarr = {
-    #  autoStart = true;
-    #  environment = {
-    #    TZ = "America/Chicago";
-    #  };
-    #  image = "ghcr.io/recyclarr/recyclarr:latest";
-    #  volumes = [ "/data/.state/nixarr/recyclarr:/config" ];
-    #  extraOptions = [ "--network=host" ];
-    #};
 
     flaresolverr = {
       autoStart = true;
