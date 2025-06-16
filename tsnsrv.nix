@@ -16,7 +16,7 @@
       jellyfin.urlParts.port = 8096;
       # autobrr.urlParts.port = 7474;
       transmission.urlParts.port = 9091;
-      sabnzbd.urlParts.port = 8080;
+      sabnzbd.urlParts.port = 6336;
       # bazarr.urlParts.port = 6767;
       lidarr.urlParts.port = 8686;
       prowlarr.urlParts.port = 9696;
