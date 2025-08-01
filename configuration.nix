@@ -8,7 +8,6 @@
     ./minecraft.nix
     ./miniflux.nix
     ./paperless.nix
-    # ./mailserver.nix
   ];
 
   boot = {
@@ -61,18 +60,21 @@
       inputs.agenix.packages."x86_64-linux".default
       git
       helix
+      libnatpmp
       nil
       nixfmt-rfc-style
-      neovim
       unzip
-      libnatpmp
     ];
     variables.EDITOR = "hx";
   };
 
   virtualisation = {
-    docker.enable = true;
-    oci-containers.backend = "docker";
+    containers.enable = true;
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
   };
 
   services = {
