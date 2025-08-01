@@ -4,7 +4,7 @@
   age.secrets.paperless.file = ./secrets/paperless.age;
 
   services.paperless = {
-    enable = true;
+    enable = false;
     address = "0.0.0.0";
     passwordFile = config.age.secrets.paperless.path;
     settings = {
