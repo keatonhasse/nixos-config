@@ -9,23 +9,21 @@
       url = "github:boinkor-net/tsnsrv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-minecraft = {
-      url = "github:Infinidoge/nix-minecraft";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixarr = {
-      url = "github:keatonhasse/nixarr/tautulli";
+      url = "github:rasmus-kirk/nixarr/dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
   };
 
-  outputs = { self, nixpkgs, agenix, ... }@inputs: {
+  outputs = { self, nixpkgs, agenix, quadlet-nix, ... }@inputs: {
     nixosConfigurations.anton = nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs; };
       system = "x86_64-linux";
       modules = [
         ./configuration.nix
         agenix.nixosModules.default
+        quadlet-nix.nixosModules.quadlet
       ];
     };
   };
