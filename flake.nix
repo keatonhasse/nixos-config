@@ -18,10 +18,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
-    # alejandra = {
-    #   url = "github:kamadorueda/alejandra/4.0.0";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
   };
 
   outputs = {
@@ -30,21 +26,13 @@
     home-manager,
     agenix,
     quadlet-nix,
-    # alejandra,
     ...
   } @ inputs: let
-    # systems = [
-    # "x86_64-linux"
-    # "aarch64-darwin"
-    # ];
-    # forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     forAllSystems = f:
       nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system: f nixpkgs.legacyPackages.${system});
   in {
     overlays = import ./overlays {inherit inputs;};
     packages = forAllSystems (pkgs: import ./pkgs {inherit pkgs;});
-    # devShells = forAllSystems (pkgs: import ./shell.nix {inherit pkgs;});
-    # formatter = forAllSystems (pkgs: pkgs.alejandra);
     nixosConfigurations = {
       zeus = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
