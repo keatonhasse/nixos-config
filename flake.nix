@@ -10,6 +10,7 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak.url = "github:/gmodena/nix-flatpak/latest";
     tsnsrv = {
       url = "github:boinkor-net/tsnsrv";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,14 +31,15 @@
     quadlet-nix,
     ...
   } @ inputs: let
-    forAllSystems = f:
-      nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system: f nixpkgs.legacyPackages.${system});
+    # forAllSystems = f:
+    # nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system: f nixpkgs.legacyPackages.${system});
   in {
-    overlays = import ./overlays {inherit inputs;};
-    packages = forAllSystems (pkgs: import ./pkgs {inherit pkgs;});
+    # overlays = import ./overlays {inherit inputs;};
+    # packages = forAllSystems (pkgs: import ./pkgs {inherit pkgs;});
     nixosConfigurations = {
       zeus = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
         modules = [./hosts/zeus];
       };
       anton = nixpkgs.lib.nixosSystem {

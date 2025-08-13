@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     inputs.hardware.nixosModule.common-cpu-intel
     inputs.hardware.nixosModule.common-gpu-intel
@@ -10,7 +6,9 @@
     inputs.harwarde.nixosModule.common-pc-ssd
     ./hardware-configuration.nix
     ./configuration.nix
+    ./home.nix
   ];
 
+  networking.hostName = "anton";
   system.stateVersion = "24.05";
 }

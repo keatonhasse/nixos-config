@@ -1,8 +1,9 @@
-{ pkgs, inputs, ... }:
-
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
-    ./hardware-configuration.nix
     ./tsnsrv.nix
     ./nixarr.nix
     ./minecraft.nix
@@ -18,11 +19,11 @@
       };
       efi.canTouchEfiVariables = true;
     };
-    blacklistedKernelModules = [ "iwlwifi" ];
+    blacklistedKernelModules = ["iwlwifi"];
   };
 
   nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = ["nix-command" "flakes"];
     gc = {
       automatic = true;
       dates = "weekly";
@@ -34,11 +35,11 @@
   networking = {
     hostName = "anton";
     useNetworkd = true;
-    enableIPv6  = false;
-    nameservers = [ "194.242.2.2" ];
+    enableIPv6 = false;
+    nameservers = ["194.242.2.2"];
     firewall = {
-      allowedTCPPorts = [ 22 80 443 ];
-      trustedInterfaces = [ "tailscale0" ];
+      allowedTCPPorts = [22 80 443];
+      trustedInterfaces = ["tailscale0"];
     };
   };
 
@@ -47,7 +48,7 @@
   users.users.keaton = {
     isNormalUser = true;
     description = "keaton";
-    extraGroups = [ "wheel" "docker" "minecraft" ];
+    extraGroups = ["wheel" "docker" "minecraft"];
   };
   services.getty.autologinUser = "keaton";
   security.sudo.wheelNeedsPassword = false;
@@ -80,8 +81,6 @@
   services = {
     openssh.enable = true;
     tailscale.enable = true;
-    audiobookshelf.enable = false;
-    invidious.enable = false;
   };
 
   system.stateVersion = "24.05";

@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   imports = [
     inputs.hardware.nixosModules.common-cpu-amd
     inputs.hardware.nixosModules.common-cpu-amd-pstate
@@ -11,7 +7,9 @@
     inputs.hardware.nixosModules.common-pc-ssd
     ./hardware-configuration.nix
     ./configuration.nix
+    ./home.nix
   ];
 
+  networking.hostName = "zeus";
   system.stateVersion = "25.05";
 }

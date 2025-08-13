@@ -7,24 +7,18 @@
     "openssl-1.1.1w"
   ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "zeus";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 
   networking.networkmanager.enable = true;
 
   time.timeZone = "America/Chicago";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
     LC_MEASUREMENT = "en_US.UTF-8";
@@ -34,98 +28,86 @@
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
+    };
   };
 
-  services.xserver.enable = true;
-
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  services = {
+    xserver = {
+      enable = true;
+      excludePackages = with pkgs; [xterm];
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
+      xserver.xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
+    printing.enable = true;
+    pulseaudio.enable = false;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    flatpak.enable = true;
+    tailscale.enable = true;
   };
 
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.keaton = {
     isNormalUser = true;
     description = "Keaton Hasse";
     extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [
-      #  thunderbird
-    ];
   };
 
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      set fish_greeting
-      export XDG_DATA_DIRS=$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share
-    '';
-  };
-
-  programs.firefox.enable = true;
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = ["keaton"];
+  programs = {
+    firefox.enable = true;
+    _1password.enable = true;
+    _1password-gui = {
+      enable = true;
+      polkitPolicyOwners = ["keaton"];
+    };
+    fish = {
+      enable = true;
+      interactiveShellInit = ''
+          set fish_greeting
+        '';
+    }
   };
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = with pkgs; [
-    git
-    tailscale
-    helix
-    sublime4
-    sublime-merge
-    ghostty
-    # steam-devices-udev-rules
-  ];
-
-  services.flatpak.enable = true;
-
-  services.tailscale.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  environment = {
+    systemPackages = with pkgs; [
+      git
+      tailscale
+      nixd
+      alejandra
+      helix
+      sublime4
+      sublime-merge
+      ghostty
+      # cider-3
+      dxvk
+      gnome-2048
+      gnome-chess
+      stockfish
+      gnome-sudoku
+      crosswords
+      gnomeExtensions.dash-to-dock
+      gnomeExtensions.caffeine
+      gnomeExtensions.gsconnect
+      gnomeExtensions.hide-top-bar
+      gnomeExtensions.window-is-ready-remover
+      gnomeExtensions.remove-world-clocks
+      gnomeExtensions.appindicator
+      protonvpn-gui
+      transmission_4
+    ];
+    gnome.excludePackages = with pkgs; [gnome-tour];
+  };
 }
