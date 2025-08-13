@@ -35,13 +35,13 @@
     xserver = {
       enable = true;
       excludePackages = with pkgs; [xterm];
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
-      xserver.xkb = {
+      xkb = {
         layout = "us";
         variant = "";
       };
     };
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
     printing.enable = true;
     pulseaudio.enable = false;
     pipewire = {
