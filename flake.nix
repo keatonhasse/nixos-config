@@ -1,10 +1,16 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hardware.url = "github:nixos/nixos-hardware";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak.url = "github:/gmodena/nix-flatpak/latest";
     tsnsrv = {
       url = "github:boinkor-net/tsnsrv";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -16,15 +22,31 @@
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
   };
 
-  outputs = { self, nixpkgs, agenix, quadlet-nix, ... }@inputs: {
-    nixosConfigurations.anton = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs; };
-      system = "x86_64-linux";
-      modules = [
-        ./configuration.nix
-        agenix.nixosModules.default
-        quadlet-nix.nixosModules.quadlet
-      ];
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    hardware,
+    agenix,
+    quadlet-nix,
+    ...
+  } @ inputs: let
+    # forAllSystems = f:
+    # nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system: f nixpkgs.legacyPackages.${system});
+  in {
+    # overlays = import ./overlays {inherit inputs;};
+    # packages = forAllSystems (pkgs: import ./pkgs {inherit pkgs;});
+    nixosConfigurations = {
+      zeus = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = [./hosts/zeus];
+      };
+      anton = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = [./hosts/anton];
+      };
     };
   };
 }
