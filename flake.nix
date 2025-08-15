@@ -1,25 +1,30 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hardware.url = "github:nixos/nixos-hardware";
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-flatpak.url = "github:/gmodena/nix-flatpak/latest";
-    tsnsrv = {
-      url = "github:boinkor-net/tsnsrv";
+    hardware.url = "github:nixos/nixos-hardware";
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-flatpak.url = "github:/gmodena/nix-flatpak/latest";
     nixarr = {
       url = "github:rasmus-kirk/nixarr/dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
+    tsnsrv = {
+      url = "github:boinkor-net/tsnsrv";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
