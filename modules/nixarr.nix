@@ -7,14 +7,14 @@ in
 
   age.secrets.airvpn.file = ./secrets/airvpn.age;
 
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-media-sdk
-      intel-compute-runtime
-      intel-media-driver
-    ];
-  };
+  # hardware.graphics = {
+  #   enable = true;
+  #   extraPackages = with pkgs; [
+  #     intel-media-sdk
+  #     intel-compute-runtime
+  #     intel-media-driver
+  #   ];
+  # };
 
   nixarr = {
     enable = true;
@@ -27,9 +27,8 @@ in
     };
 
     plex.enable = true;
-    tautulli.enable = true;
+    # tautulli.enable = true;
     jellyfin.enable = true;
-    jellyseerr.enable = true;
 
     autobrr.enable = false;
     transmission = {
