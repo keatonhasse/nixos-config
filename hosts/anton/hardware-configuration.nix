@@ -30,6 +30,12 @@
       options = [ "nofail" ];
     };
 
+  fileSystems."/data/media/library/music" =
+    { device = "/dev/disk/by-uuid/930fd766-4b07-4122-bfbc-1ff85fc2f35b";
+      fsType = "ext4";
+      options = [ "nofail" ];
+    };
+
   fileSystems."/data/redtopia" =
     { device = "//192.168.8.1/music/redtopia";
       fsType = "cifs";
@@ -39,19 +45,6 @@
   swapDevices =
     [ { device = "/dev/disk/by-uuid/b518f24f-9a12-478c-9e48-e0ebf742583f"; }
     ];
-
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.docker0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
-  # networking.interfaces.tailscale0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.veth-wg-br.useDHCP = lib.mkDefault true;
-  # networking.interfaces.veth8f6dd86.useDHCP = lib.mkDefault true;
-  # networking.interfaces.vethe5133e9.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wg-br.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
